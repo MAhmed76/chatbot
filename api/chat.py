@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 
-# Initialize Flask app
 app = Flask(__name__)
 
 # Chatbot response logic
@@ -20,8 +19,6 @@ def chat():
     response = chatbot_response(user_message)
     return jsonify({"response": response})
 
-# Vercel handler that makes the app function work in serverless environment
-def handler(request, *args):
-    return app(request.environ, start_response=args[0] if args else None)
-
-# The above function should be used as the entry point.
+# This is the entry point that Vercel uses to call the serverless function
+def handler(request):
+    return app(request.environ, start_response=None)
