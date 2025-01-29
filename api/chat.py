@@ -1,12 +1,14 @@
 from flask import Flask, request, jsonify
 
+# Initialize Flask app
 app = Flask(__name__)
 
+# Chatbot response logic
 def chatbot_response(message):
     responses = {
-        "hello": "Hi there! How can I help you?",
+        "hello": "Hi there! How can I assist you?",
         "how are you": "I'm just a bot, but I'm doing great!",
-        "bye": "Goodbye! Have a nice day!"
+        "bye": "Goodbye! Have a great day!"
     }
     return responses.get(message.lower(), "Sorry, I don't understand that.")
 
@@ -18,5 +20,8 @@ def chat():
     response = chatbot_response(user_message)
     return jsonify({"response": response})
 
-def handler(event, context):
-    return app(event, context)
+# Vercel handler that makes the app function work in serverless environment
+def handler(request, *args):
+    return app(request.environ, start_response=args[0] if args else None)
+
+# The above function should be used as the entry point.
